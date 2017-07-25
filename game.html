@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>game 1</title>
+        <style media="screen">
+            canvas { border: 1px solid black;}
+        </style>
+    </head>
+    <body>
+        <canvas id="id-canvas" width="400" height="300"></canvas>
+        <script>
+            var log = console.log.bind(console)
+
+            var imageFromPath = function(path){
+                var image = new Image()
+                image.src = path
+                return image
+            }
+
+            var Paddle = function(){
+
+                var image = imageFromPath('paddle.png')
+                var o = {
+                    image:image,
+                    x:150,
+                    y:250,
+                    speed:5,
+                }
+                o.moveLeft = function(){
+                    o.x -= o.speed
+                }
+                o.moveRight = function(){
+                    o.x += o.speed
+                }
+                o.collide = function(ball){
+                    if(ball.y+ball.image.height > o.y){
+                        if(ball.x > o.x && ball.x < o.x +o.image.width){
+                            return true
+                        }
+                    }
+                    return false
+                }
+                return o
+            }
+
+            var Ball = function(){
+
+                var image = imageFromPath('ball.png')
+                var o = {
+                    image:image,
+                    x:1,
+                    y:1,
+                    speedX:5,
+                    speedY:5,
+                    fired:false,
+                }
+                o.move = function(){
+                    if(o.fired){
+
+                        if(o.x<0 || o.x>400){
+                            o.speedX = -o.speedX
+                        }
+                        if(o.y<0 || o.y>300){
+                            o.speedY = -o.speedY
+                        }
+                        o.x += o.speedX
+                        o.y += o.speedY
+                    }
+                }
+                o.fire = function(){
+                    o.fired = true
+                }
+                o.反弹 = function(){
+                   o.speedY*=-1
+                }
+                return o
+            }
+
+            var GuaGame = function(){
+                var g = {
+                    actions:{},   //哪些键被注册了事件
+                    keydowns:{},  //被按下按键的状态
+                }
+                var canvas = document.querySelector('#id-canvas')
+                if (canvas.getContext) {
+                    var context = canvas.getContext('2d')
+                    g.canvas = canvas
+                    g.context = context
+                    g.drawImage = function(guaImage){
+                         g.context.drawImage(guaImage.image,guaImage.x,guaImage.y)
+                    }
+                    g.registerAction = function(keycode,callback){  //注册按键事件
+                        g.actions[keycode] = callback
+                    }
+                    //events
+                    window.addEventListener('keydown',function(event){
+                        g.keydowns[event.code] = true
+                    })
+                    window.addEventListener('keyup',function(event){
+                        g.keydowns[event.code] = false
+                    })
+                    //timer
+                    setInterval(function(){
+                        //event    Object.keys()返回一个由给定对象自身属性组成的数组
+                        var actions = Object.keys(g.actions)//获取 keycode数组
+                        for(var i = 0; i<actions.length; i++){
+                            var keycode = actions[i]
+                            if(g.keydowns[keycode]){
+                                //按键被按下 调用注册的函数
+                                g.actions[keycode]()
+                            }
+                        }
+                        //update
+                        g.update()
+                        //clear
+                        context.clearRect(0,0,canvas.width,canvas.height)
+                        //draw
+                        g.draw()
+                    },1000/60)
+
+
+                }
+
+                return g
+            }
+
+            var _main = function(){
+
+                var game = GuaGame()
+                var paddle = Paddle()
+                var ball = Ball()
+
+                game.registerAction('KeyA',function(){
+                    paddle.moveLeft()
+                })
+
+                game.registerAction('KeyD',function(){
+                    paddle.moveRight()
+                })
+
+                game.registerAction('KeyF',function(){
+                    ball.fire()
+                })
+
+                game.update = function(){
+                   ball.move()
+                   //判断相撞
+                   if(paddle.collide(ball)){
+                        ball.反弹()
+                   }
+                }
+                game.draw = function(){
+                    //draw
+                    game.drawImage(paddle)
+                    game.drawImage(ball)
+                }
+                // game.registerAction('ArrowLeft',function(){
+                //     paddle.moveLeft()
+                // })
+                // game.registerAction('ArrowRight',function(){
+                //     paddle.moveRight()
+                // })
+
+            }
+
+            _main()
+        </script>
+    </body>
+</html>
