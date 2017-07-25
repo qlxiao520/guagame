@@ -18,6 +18,16 @@
                 return image
             }
 
+            var rectIntersects = function(r,s){
+
+                if(ball.y+ball.image.height > o.y){
+                    if(ball.x > o.x && ball.x < o.x +o.image.width){
+                        return true
+                    }
+                }
+                return false
+
+            }
             var Paddle = function(){
 
                 var image = imageFromPath('paddle.png')
@@ -34,11 +44,7 @@
                     o.x += o.speed
                 }
                 o.collide = function(ball){
-                    if(ball.y+ball.image.height > o.y){
-                        if(ball.x > o.x && ball.x < o.x +o.image.width){
-                            return true
-                        }
-                    }
+
                     return false
                 }
                 return o
@@ -76,7 +82,25 @@
                 }
                 return o
             }
+            var Block = function(){
 
+                var image = imageFromPath('block.png')
+                var o = {
+                    image:image,
+                    x:100,
+                    y:50,
+                    w:50,
+                    h:20,
+                    alive:true,
+                }
+                o.kill = function(){
+                    o.alive = false
+                }
+                o.collide = function(ball){
+
+                }
+                return o
+            }
             var GuaGame = function(){
                 var g = {
                     actions:{},   //哪些键被注册了事件
@@ -130,6 +154,7 @@
                 var game = GuaGame()
                 var paddle = Paddle()
                 var ball = Ball()
+                var block = Block()
 
                 game.registerAction('KeyA',function(){
                     paddle.moveLeft()
@@ -149,11 +174,20 @@
                    if(paddle.collide(ball)){
                         ball.反弹()
                    }
+
+                   //判断球跟block相撞
+                   if(block.collide(ball)){
+
+                   }
                 }
                 game.draw = function(){
                     //draw
                     game.drawImage(paddle)
                     game.drawImage(ball)
+                    //draw block
+                    if(block.alive){
+                        game.drawImage(block)
+                    }
                 }
                 // game.registerAction('ArrowLeft',function(){
                 //     paddle.moveLeft()
