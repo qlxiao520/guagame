@@ -1,204 +1,105 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="utf-8">
-        <title>game 1</title>
-        <style media="screen">
-            canvas { border: 1px solid black;}
-        </style>
-    </head>
-    <body>
-        <canvas id="id-canvas" width="400" height="300"></canvas>
-        <script>
-            var log = console.log.bind(console)
 
-            var imageFromPath = function(path){
-                var image = new Image()
-                image.src = path
-                return image
+<head>
+    <meta charset="utf-8">
+    <title>game 1</title>
+    <style media="screen">
+        canvas {
+            border: 1px solid black;
+        }
+    </style>
+    <script src="utils.js"></script>
+    <script src="ball.js"></script>
+    <script src="block.js"></script>
+    <script src="guagame.js"></script>
+    <script src="paddle.js"></script>
+
+
+</head>
+
+<body>
+    <canvas id="id-canvas" width="400" height="300"></canvas>
+    <script>
+        var loadLevel = function(n){
+            n = n -1 
+            var level = levels[n]
+            for(let i = 0 ; i<level.length;i++){
+                
             }
+        }
+        var _main = function () {
 
-            var rectIntersects = function(r,s){
-
-                if(ball.y+ball.image.height > o.y){
-                    if(ball.x > o.x && ball.x < o.x +o.image.width){
-                        return true
-                    }
-                }
-                return false
-
+            var game = GuaGame(60)
+            var paddle = Paddle()
+            var ball = Ball()
+            var blocks = []
+            for (var i = 0; i < 3; i++) {
+                var b = Block()
+                //设置block坐标
+                b.y = 50
+                b.x = i * 150
+                blocks.push(b)
             }
-            var Paddle = function(){
+            var paused = false
+            game.registerAction('KeyA', function () {
+                paddle.moveLeft()
+            })
 
-                var image = imageFromPath('paddle.png')
-                var o = {
-                    image:image,
-                    x:150,
-                    y:250,
-                    speed:5,
-                }
-                o.moveLeft = function(){
-                    o.x -= o.speed
-                }
-                o.moveRight = function(){
-                    o.x += o.speed
-                }
-                o.collide = function(ball){
+            game.registerAction('KeyD', function () {
+                paddle.moveRight()
+            })
 
-                    return false
-                }
-                return o
-            }
+            game.registerAction('KeyF', function () {
+                ball.fire()
+            })
 
-            var Ball = function(){
+            window.addEventListener('keydown', function (event) {
+                if (event.code == 'KeyP') {
+                    paused = !paused
+                }
+            })
 
-                var image = imageFromPath('ball.png')
-                var o = {
-                    image:image,
-                    x:1,
-                    y:1,
-                    speedX:5,
-                    speedY:5,
-                    fired:false,
-                }
-                o.move = function(){
-                    if(o.fired){
+            game.update = function () {
 
-                        if(o.x<0 || o.x>400){
-                            o.speedX = -o.speedX
-                        }
-                        if(o.y<0 || o.y>300){
-                            o.speedY = -o.speedY
-                        }
-                        o.x += o.speedX
-                        o.y += o.speedY
-                    }
-                }
-                o.fire = function(){
-                    o.fired = true
-                }
-                o.反弹 = function(){
-                   o.speedY*=-1
-                }
-                return o
-            }
-            var Block = function(){
-
-                var image = imageFromPath('block.png')
-                var o = {
-                    image:image,
-                    x:100,
-                    y:50,
-                    w:50,
-                    h:20,
-                    alive:true,
-                }
-                o.kill = function(){
-                    o.alive = false
-                }
-                o.collide = function(ball){
-
-                }
-                return o
-            }
-            var GuaGame = function(){
-                var g = {
-                    actions:{},   //哪些键被注册了事件
-                    keydowns:{},  //被按下按键的状态
-                }
-                var canvas = document.querySelector('#id-canvas')
-                if (canvas.getContext) {
-                    var context = canvas.getContext('2d')
-                    g.canvas = canvas
-                    g.context = context
-                    g.drawImage = function(guaImage){
-                         g.context.drawImage(guaImage.image,guaImage.x,guaImage.y)
-                    }
-                    g.registerAction = function(keycode,callback){  //注册按键事件
-                        g.actions[keycode] = callback
-                    }
-                    //events
-                    window.addEventListener('keydown',function(event){
-                        g.keydowns[event.code] = true
-                    })
-                    window.addEventListener('keyup',function(event){
-                        g.keydowns[event.code] = false
-                    })
-                    //timer
-                    setInterval(function(){
-                        //event    Object.keys()返回一个由给定对象自身属性组成的数组
-                        var actions = Object.keys(g.actions)//获取 keycode数组
-                        for(var i = 0; i<actions.length; i++){
-                            var keycode = actions[i]
-                            if(g.keydowns[keycode]){
-                                //按键被按下 调用注册的函数
-                                g.actions[keycode]()
-                            }
-                        }
-                        //update
-                        g.update()
-                        //clear
-                        context.clearRect(0,0,canvas.width,canvas.height)
-                        //draw
-                        g.draw()
-                    },1000/60)
-
-
+                if (paused) {
+                    return
                 }
 
-                return g
-            }
+                ball.move()
+                //判断板子跟球相撞
+                if (paddle.collide(ball)) {
+                    // log('paddle相撞')
+                    ball.反弹()
+                }
 
-            var _main = function(){
-
-                var game = GuaGame()
-                var paddle = Paddle()
-                var ball = Ball()
-                var block = Block()
-
-                game.registerAction('KeyA',function(){
-                    paddle.moveLeft()
-                })
-
-                game.registerAction('KeyD',function(){
-                    paddle.moveRight()
-                })
-
-                game.registerAction('KeyF',function(){
-                    ball.fire()
-                })
-
-                game.update = function(){
-                   ball.move()
-                   //判断相撞
-                   if(paddle.collide(ball)){
+                //判断球跟block相撞
+                for (let i = 0; i < blocks.length; i++) {
+                    if (blocks[i].collide(ball)) {
+                        // log('block相撞')
+                        blocks[i].kill()
                         ball.反弹()
-                   }
-
-                   //判断球跟block相撞
-                   if(block.collide(ball)){
-
-                   }
-                }
-                game.draw = function(){
-                    //draw
-                    game.drawImage(paddle)
-                    game.drawImage(ball)
-                    //draw block
-                    if(block.alive){
-                        game.drawImage(block)
                     }
                 }
-                // game.registerAction('ArrowLeft',function(){
-                //     paddle.moveLeft()
-                // })
-                // game.registerAction('ArrowRight',function(){
-                //     paddle.moveRight()
-                // })
 
             }
+            game.draw = function () {
+                //draw
+                game.drawImage(paddle)
+                game.drawImage(ball)
+                //draw block
+                for (let i = 0; i < blocks.length; i++) {
+                    if (blocks[i].alive) {
+                        game.drawImage(blocks[i])
+                    }
 
-            _main()
-        </script>
-    </body>
+                }
+
+            }
+        }
+
+        _main()
+    </script>
+</body>
+
 </html>
