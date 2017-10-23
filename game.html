@@ -9,97 +9,37 @@
             border: 1px solid black;
         }
     </style>
-    <script src="utils.js"></script>
-    <script src="ball.js"></script>
-    <script src="block.js"></script>
-    <script src="guagame.js"></script>
-    <script src="paddle.js"></script>
+    <!-- guagame相关文件 -->
 
+    <script src="guagame/gua_game.js"></script>
+    <script src="guagame/gua_scene.js"></script>
+    <script src="guagame/utils.js"></script>
+
+    <!-- 场景文件 -->
+
+    <script src="scene/main/ball.js"></script>
+    <script src="scene/main/block.js"></script>
+    <script src="scene/main/paddle.js"></script>
+    <script src="scene/main/scene.js"></script>
+   
+    <!-- 结束和标题场景 -->
+
+    <script src="scene/end/scene_end.js"></script>
+    <script src="scene/title/scene_title.js"></script>
+    
+    <!-- 关卡数据 -->
+    <script src="level.js"></script>
 
 </head>
 
 <body>
     <canvas id="id-canvas" width="400" height="300"></canvas>
-    <script>
-        var loadLevel = function(n){
-            n = n -1 
-            var level = levels[n]
-            for(let i = 0 ; i<level.length;i++){
-                
-            }
-        }
-        var _main = function () {
-
-            var game = GuaGame(60)
-            var paddle = Paddle()
-            var ball = Ball()
-            var blocks = []
-            for (var i = 0; i < 3; i++) {
-                var b = Block()
-                //设置block坐标
-                b.y = 50
-                b.x = i * 150
-                blocks.push(b)
-            }
-            var paused = false
-            game.registerAction('KeyA', function () {
-                paddle.moveLeft()
-            })
-
-            game.registerAction('KeyD', function () {
-                paddle.moveRight()
-            })
-
-            game.registerAction('KeyF', function () {
-                ball.fire()
-            })
-
-            window.addEventListener('keydown', function (event) {
-                if (event.code == 'KeyP') {
-                    paused = !paused
-                }
-            })
-
-            game.update = function () {
-
-                if (paused) {
-                    return
-                }
-
-                ball.move()
-                //判断板子跟球相撞
-                if (paddle.collide(ball)) {
-                    // log('paddle相撞')
-                    ball.反弹()
-                }
-
-                //判断球跟block相撞
-                for (let i = 0; i < blocks.length; i++) {
-                    if (blocks[i].collide(ball)) {
-                        // log('block相撞')
-                        blocks[i].kill()
-                        ball.反弹()
-                    }
-                }
-
-            }
-            game.draw = function () {
-                //draw
-                game.drawImage(paddle)
-                game.drawImage(ball)
-                //draw block
-                for (let i = 0; i < blocks.length; i++) {
-                    if (blocks[i].alive) {
-                        game.drawImage(blocks[i])
-                    }
-
-                }
-
-            }
-        }
-
-        _main()
-    </script>
+    <hr>
+    <input type="range"  id="id-input-speed" value="30">
+    <div class = "">
+        <textarea id="id-text-log" cols="50" rows="20"></textarea>
+    </div>
+    <script src="main.js"></script>
 </body>
 
 </html>
