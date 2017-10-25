@@ -60,7 +60,7 @@ class GuaGame {
 
     }
     drawImage(img) {
-        this.context.drawImage(img.image, img.x, img.y)
+        this.context.drawImage(img.texture, img.x, img.y)
     }
 
     update() {
@@ -98,17 +98,16 @@ class GuaGame {
         }, 1000 / window.fps)
 
     }
-    imageByName(name) {
+    textureByName(name) {
         var g = this
         var img = g.images[name]
 
-        var image = {
-            w: img.width,
-            h: img.height,
-            image: g.images[name]
-        }
-
-        return image
+        // var image = {
+        //     w: img.width,
+        //     h: img.height,
+        //     image: g.images[name]
+        // }
+        return img
     }
     __start(g) {
         this.runCallback(g)
