@@ -41,7 +41,7 @@ class Player extends GuaImage {
 class Cloud extends GuaImage {
     constructor(game, name) {
         super(game, name)
-        log(name)
+
     }
     moveLeft() {
         this.x -= this.speed
