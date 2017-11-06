@@ -44,7 +44,11 @@ var _main = function () {
         cloud: 'img/dafeiji/cloud1.png',
         player: 'img/dafeiji/hero1.png',
         sky:'img/dafeiji/background.png',
-        enemy:'img/dafeiji/enemy1.png',
+        enemy4:'img/dafeiji/enemy2.png',
+        enemy3:'img/dafeiji/enemy1.png',
+        enemy2:'img/dafeiji/enemy0.png',
+        enemy1:'img/dafeiji/enemy0.png',
+        enemy0:'img/dafeiji/enemy0.png',
     }
 
 

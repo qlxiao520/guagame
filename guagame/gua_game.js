@@ -60,6 +60,7 @@ class GuaGame {
 
     }
     drawImage(img) {
+        //img是一个 guaImage
         this.context.drawImage(img.texture, img.x, img.y)
     }
 

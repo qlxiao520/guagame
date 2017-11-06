@@ -10,10 +10,11 @@
         }
     </style>
     <!-- guagame相关文件 -->
+    <script src="guagame/utils.js"></script>
     <script src="guagame/gua_image.js"></script>
     <script src="guagame/gua_game.js"></script>
     <script src="guagame/gua_scene.js"></script>
-    <script src="guagame/utils.js"></script>
+    <script src="guagame/gua_particle.js"></script>
 
     <!-- 场景文件 -->
 
@@ -21,20 +22,88 @@
     <script src="scene/main/block.js"></script>
     <script src="scene/main/paddle.js"></script>
     <script src="scene/main/scene.js"></script>
-   
+
     <!-- 结束和标题场景 -->
 
     <script src="scene/end/scene_end.js"></script>
     <script src="scene/title/scene_title.js"></script>
-    
+
     <!-- 关卡数据 -->
     <script src="level.js"></script>
 
 </head>
 
 <body>
-    <canvas id="id-canvas" width="480" height="800"></canvas>
+    <canvas id="id-canvas" width="480" height="1000"></canvas>
+    <hr>
+    <div>
+        <div class="">
+            <label>
+                <input type="range" class="gua-auto-slider" 
+                value="" 
+                data-value="config.player_speed"
+                max = 40
+                min= 0
+                > 
+                玩家速度:<span class="gua-label"></span>
+            </label>
+        </div>
+        <div class="">
+            <label>
+                <input type="range" class="gua-auto-slider" 
+                value="" 
+                data-value="config.fire_cooldown"
+                > 
+                子弹冷却时间:<span class="gua-label"></span>
+            </label>
+        </div>
+        <div class="">
+            <label>
+                <input type="range" class="gua-auto-slider" 
+                value="" 
+                data-value="config.bullet_speed"
+                > 
+                Bullet速度: <span class="gua-label"></span>
+            </label>
+        </div>
+        <div class="">
+                <label>
+                    <input type="range" class="gua-auto-slider" 
+                    value="" 
+                    data-value="config.cloud_speed"
+                    max = 10
+                    min= -10
+                    > 
+                    Cloud速度:<span class="gua-label"></span>
+                </label>
+            </div></div>
     <script src="main.js"></script>
+    <script>
+        var es = sel => document.querySelectorAll(sel)
+        var bindAll = function (sel, eventName, callback) {
+            var l = es(sel)
+            for (var index = 0; index < l.length; index++) {
+                var input = l[index];
+                input.addEventListener(eventName, function (event) {
+                    callback(event)//匿名函数不要作为参数 要用函数包起来
+                })
+            }
+        }
+
+        bindAll('.gua-auto-slider', 'input', function (event) {
+            var target = event.target
+            var bindVar = target.dataset.value
+            var v = target.value
+            eval(bindVar + '=' + v)
+            //不用eval就把class设为config里的变量 通过中括号访问
+            //但这样就只能改config 如果还有其他修改就不方便了
+            //config[bindVar] = v
+            //
+            var label = target.closest('label').querySelector('.gua-label')
+            label.innerText = v
+        })
+
+    </script>
 </body>
 
 </html>
