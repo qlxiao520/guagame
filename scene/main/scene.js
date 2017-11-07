@@ -11,11 +11,13 @@ class Scene extends GuaScene {
         this.bg = GuaImage.new(g,'sky')
         this.cloud = Cloud.new(g)
         this.player = Player.new(g)
- 
+        var ps = GuaParticleSystem.new(g)
+       
 
         this.addElement(this.bg)
         this.addElement(this.cloud)
         this.addElement(this.player)
+        this.addElement(ps)
         this.addEnemies()
     }
     addEnemies(){
