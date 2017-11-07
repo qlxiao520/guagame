@@ -27,3 +27,7 @@ var rectIntersects = function (a, b) {
     return false
     log('未相撞')
 }
+
+const randomBetween = function (start,end) {
+    return Math.floor(start+Math.random()*(end-start+1))
+}
