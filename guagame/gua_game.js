@@ -16,10 +16,10 @@ class GuaGame {
         var self = this
         //events
         window.addEventListener('keydown', function (event) {
-            self.keydowns[event.code] = true
+            self.keydowns[event.code] = 'down'
         })
         window.addEventListener('keyup', event => {
-            this.keydowns[event.code] = false
+            this.keydowns[event.code] = 'up'
         })
 
     }
@@ -81,9 +81,14 @@ class GuaGame {
         var actions = Object.keys(g.actions)//获取 keycode数组
         for (var i = 0; i < actions.length; i++) {
             var keycode = actions[i]
-            if (g.keydowns[keycode]) {
+            var keyStatus = g.keydowns[keycode]
+            if (keyStatus=='down') {
                 //按键被按下 调用注册的函数
-                g.actions[keycode]()
+                g.actions[keycode]('down')
+            }else if(keyStatus=='up'){
+                g.actions[keycode]('up')
+                //删除按键的状态
+                g.keydowns[keycode]=null
             }
         }
         //update

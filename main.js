@@ -40,24 +40,34 @@ var _main = function () {
 
 
     var images = {
-        bullet: 'img/dafeiji/bullet1.png',
-        cloud: 'img/dafeiji/cloud1.png',
-        player: 'img/dafeiji/hero1.png',
-        sky:'img/dafeiji/background.png',
-        enemy4:'img/dafeiji/enemy2.png',
-        enemy3:'img/dafeiji/enemy1.png',
-        enemy2:'img/dafeiji/enemy0.png',
-        enemy1:'img/dafeiji/enemy0.png',
-        enemy0:'img/dafeiji/enemy0.png',
-        fire:'img/dafeiji/bullet.png',
+        // bullet: 'img/dafeiji/bullet1.png',
+        // cloud: 'img/dafeiji/cloud1.png',
+        // player: 'img/dafeiji/hero1.png',
+        // sky:'img/dafeiji/background.png',
+        // enemy4:'img/dafeiji/enemy2.png',
+        // enemy3:'img/dafeiji/enemy1.png',
+        // enemy2:'img/dafeiji/enemy0.png',
+        // enemy1:'img/dafeiji/enemy0.png',
+        // enemy0:'img/dafeiji/enemy0.png',
+        // fire:'img/dafeiji/bullet.png',
+        idle1:'img/hengban/idle/w1.png',
+        idle2:'img/hengban/idle/w1.png',
+        run1:'img/hengban/run/r1.png',
+        run2:'img/hengban/run/r2.png',
+        run3:'img/hengban/run/r3.png',
+        run4:'img/hengban/run/r4.png',
+        run5:'img/hengban/run/r5.png',
+        run6:'img/hengban/run/r6.png',
+        run7:'img/hengban/run/r7.png',
+        run8:'img/hengban/run/r8.png',
     }
 
 
     //在images初始化完毕之后 异步的调用function(g)
     var game =GuaGame.instance(30, images, function (g) {
         //所有图片调用完毕之后
-        // var s = sceneTitle.new(g)
-        var s = Scene.new(g)
+        var s = sceneTitle.new(g)
+        // var s = Scene.new(g)
         g.runwithScene(s)
     })
 
