@@ -75,7 +75,7 @@ class GuaGame {
     }
 
     runloop() {
-        log(window.fps)
+        // log(window.fps)
         var g = this
         //event    Object.keys()返回一个由给定对象自身属性组成的数组
         var actions = Object.keys(g.actions)//获取 keycode数组

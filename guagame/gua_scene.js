@@ -16,6 +16,7 @@ class GuaScene{
         //     var e = this.elements[index]
         //     this.game.drawImage(e)  
         // }
+        //不再统一draw 交给元素自己去drawImage
         for(var e of this.elements){
             e.draw()
         }

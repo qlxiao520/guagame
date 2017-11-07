@@ -49,6 +49,7 @@ var _main = function () {
         enemy2:'img/dafeiji/enemy0.png',
         enemy1:'img/dafeiji/enemy0.png',
         enemy0:'img/dafeiji/enemy0.png',
+        fire:'img/dafeiji/bullet.png',
     }
 
 
